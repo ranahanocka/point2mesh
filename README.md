@@ -24,14 +24,14 @@ git clone https://github.com/ranahanocka/point2mesh.git
 cd point2mesh
 ```
 #### Setup Conda Environment
-- Relies on [PyTorch](https://pytorch.org/) version 1.4 (or 1.5) and [PyTorch3D](https://github.com/facebookresearch/pytorch3d) version 0.2.0. 
+- Relies on [PyTorch](https://pytorch.org/) version 1.4 (or 1.5) and [PyTorch3D](https://github.com/facebookresearch/pytorch3d) version 0.2.0. <br>
 Install via conda environment `conda env create -f environment.yml` (creates an environment called point2mesh)
 
 #### Install "Manifold" Software
 This code relies on the [Robust Watertight Manifold Software](https://github.com/hjwdzh/Manifold). 
 First ```cd``` into the location you wish to install the software. For example, we used ```cd ~/code```.
 Then follow the installation instructions in the Watertight README.
-If you installed Manifold in a different path than ```~/code/Manifold/build```, please update ```options.py``` accordingly.
+If you installed Manifold in a different path than ```~/code/Manifold/build```, please update ```options.py``` accordingly (see [this line](https://github.com/ranahanocka/point2mesh/blob/767ac0ea0f5297b912eafd61a5cd2f60ec8c8490/options.py#L6))
   
 # Running Examples
  
