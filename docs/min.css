@@ -4581,3 +4581,9 @@ img {
   color: #4cacdc  !important;
   opacity: 1.0;
 }
+
+.center {
+    display: block;
+    width: 100%;
+    text-align: center
+}

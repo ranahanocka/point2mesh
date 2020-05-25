@@ -1,3 +1,4 @@
+ 
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8"/>
@@ -67,7 +68,7 @@
         <div class="p2m_authors_list_single w-row">
             <div class="w-col w-col-4 w-col-small-3 w-col-tiny-4">
                 <a class="authors" href="" target="_blank">
-                    <a href="https://drive.google.com/file/d/1qn0In94-ZgkJv6k4ebZJvYu9f6rZlTQj/view" target="_blank"><i
+                    <a href="https://arxiv.org/abs/2005.11084" target="_blank"><i
                             class="far fa-4x fa-file text-primary mb-3 "></i></a>
                 </a></div>
 
@@ -145,5 +146,26 @@
     </div>
 </div>
 
+
+<div class="white_section">
+    <div class="w-container"><h2 class="grey-heading">Point2Mesh Overview</h2>
+        <p class="paragraph-3 the_text">
+            Point2Mesh is a technique for reconstructing a surface mesh from an input point cloud.
+            This approach "learns" from a single object, by optimizing the weights of a CNN to deform some initial mesh to shrink-wrap the input point cloud:
+        </p>
+        <div><span class="center"><img src="images/anky_resize_17.gif"></span></div>
+         <p class="paragraph-3 the_text">
+             The optimized CNN weights act as a <i>prior</i>, which encode the expected shape properties, which we refer to as a <i>self-prior</i>.
+             The premise is that shapes are <i>not</i> random, and contain strong self-correlation across multiple scales.
+        </p>
+        <div><span class="center"><img src="images/global_anky.gif"></span></div>
+
+        <p class="paragraph-3 the_text">
+            Central to the self-prior is the weight-sharing structure of a CNN, which inherently models recurring and
+            correlated structures and, hence, is weak in modeling noise and outliers, which have non-recurring geometries.
+        </p>
+        <div><span class="center"><img src="images/anky_prior.gif"></span></div>
+    </div>
+</div>
 
 </body></html>

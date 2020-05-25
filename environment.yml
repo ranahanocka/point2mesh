@@ -1,0 +1,17 @@
+name: point2mesh
+channels:
+  - pytorch
+  - defaults
+  - conda-forge
+  - fvcore
+  - pytorch3d
+dependencies:
+  - python=3.8.2
+  - numpy=1.18.1
+  - pytorch=1.4.0
+  - torchvision=0.5.0
+  - fvcore=0.1
+  - pytorch3d=0.2.0
+  - pip
+  - pip:
+    - pytest==5.4.2
