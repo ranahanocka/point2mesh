@@ -24,7 +24,7 @@ git clone https://github.com/ranahanocka/point2mesh.git
 cd point2mesh
 ```
 #### Setup Conda Environment
-- Relies on [PyTorch](https://pytorch.org/) version 1.4 (or 1.5) and [PyTorch3D](https://github.com/facebookresearch/pytorch3d) version 0.2.0. 
+- Relies on [PyTorch](https://pytorch.org/) version 1.4 (or 1.5) and [PyTorch3D](https://github.com/facebookresearch/pytorch3d) version 0.2.0. <br>
 Install via conda environment `conda env create -f environment.yml` (creates an environment called point2mesh)
 
 #### Install "Manifold" Software
