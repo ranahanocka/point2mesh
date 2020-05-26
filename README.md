@@ -13,7 +13,7 @@ this encourages local-scale geometric self-similarity across the reconstructed s
 
 <img src="docs/images/global_anky.gif" align="center" width="250px"> <br>
 
-The code was written by [Rana Hanocka](https://www.cs.tau.ac.il/~hanocka/) and Gal Metzer.
+The code was written by [Rana Hanocka](https://www.cs.tau.ac.il/~hanocka/) and [Gal Metzer](https://www.linkedin.com/in/gal-metzer-512803a1/).
 
 # Getting Started
 
@@ -71,6 +71,8 @@ To run all the examples in this repo:
 ```bash
 bash ./scripts/run_all_examples.sh
 ```
+# Running different Examples
+You should provide an initial mesh file. If the shape has genus 0, you can use the convex hull script provided in ```./scripts/process_data/convex_hull.py```
 
 # Citation
 If you find this code useful, please consider citing our paper
