@@ -64,7 +64,7 @@ for i in range(opts.iterations):
     if i % opts.export_interval == 0 and i > 0:
         print('exporting reconstruction... current LR: {}'.format(optimizer.param_groups[0]['lr']))
         with torch.no_grad():
-            part_mesh.export(os.path.join(opts.save_path, f'recon_iter:{i}.obj'))
+            part_mesh.export(os.path.join(opts.save_path, f'recon_iter_{i}.obj'))
 
     if (i > 0 and (i + 1) % opts.upsamp == 0):
         mesh = part_mesh.main_mesh
