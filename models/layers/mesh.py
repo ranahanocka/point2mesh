@@ -36,7 +36,7 @@ class Mesh:
         if type(self.faces) is np.ndarray:
             self.faces = torch.from_numpy(self.faces)
         self.vs = self.vs.to(self.device)
-        self.faces = self.faces.to(self.device)
+        self.faces = self.faces.to(self.device).long()
 
     def build_gemm(self):
         self.ve = [[] for _ in self.vs]
@@ -306,7 +306,7 @@ class PartMesh:
         for i in range(self.n_submeshes):
             mask = torch.zeros(self.main_mesh.edges.shape[0]).long()
             for face in self.sub_mesh[i].faces:
-                face = self.sub_mesh_index[i][face].to(face.device).type(face.dtype)
+                face = self.sub_mesh_index[i][face].to(face.device).long()
                 for j in range(3):
                     e = tuple(sorted([face[j].item(), face[(j + 1) % 3].item()]))
                     mask[vse[e]] = 1
@@ -378,7 +378,7 @@ class PartMesh:
         vs_mask = torch.zeros(mesh.vs.shape[0])
         vs_mask[new_vs_index] = 1
         cummusum = torch.cumsum(1 - vs_mask, dim=0)
-        new_faces -= cummusum[new_faces].to(new_faces.device).type(new_faces.dtype)
+        new_faces -= cummusum[new_faces].to(new_faces.device).long()
         m = Mesh.from_tensor(mesh, new_vs.detach(), new_faces.detach(), gfmm=False)
         return m, new_vs_index
 
