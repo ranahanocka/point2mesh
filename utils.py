@@ -11,11 +11,11 @@ def manifold_upsample(mesh, save_path, Mesh, num_faces=2000, res=3000, simplify=
 
     tname = os.path.join(save_path, random_file_name('obj'))
     opts = ' ' + str(res) if res is not None else ''
-    cmd = "{} {} {} > /dev/null 2>&1".format(os.path.join(MANIFOLD_DIR, 'manifold'), fname, tname + opts)
+    cmd = "{} {} {}".format(os.path.join(MANIFOLD_DIR, 'manifold'), fname, tname + opts)
     os.system(cmd)
 
     if simplify:
-        cmd = "{} -i {} -o {} -f {} > /dev/null 2>&1".format(os.path.join(MANIFOLD_DIR, 'simplify'), tname,
+        cmd = "{} -i {} -o {} -f {}".format(os.path.join(MANIFOLD_DIR, 'simplify'), tname,
                                                              tname, num_faces)
         os.system(cmd)
 
