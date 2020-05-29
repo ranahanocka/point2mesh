@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import glob
 import os
 import uuid
 from options import MANIFOLD_DIR
@@ -9,20 +10,20 @@ def manifold_upsample(mesh, save_path, Mesh, num_faces=2000, res=3000, simplify=
     fname = os.path.join(save_path, 'recon_{}.obj'.format(len(mesh.faces)))
     mesh.export(fname)
 
-    tname = os.path.join(save_path, random_file_name('obj'))
+    temp_file = os.path.join(save_path, random_file_name('obj'))
     opts = ' ' + str(res) if res is not None else ''
-    cmd = "{} {} {}".format(os.path.join(MANIFOLD_DIR, 'manifold'), fname, tname + opts)
+    cmd = "{} {} {}".format(os.path.join(MANIFOLD_DIR, 'manifold'), fname, temp_file + opts)
     os.system(cmd)
 
     if simplify:
-        cmd = "{} -i {} -o {} -f {}".format(os.path.join(MANIFOLD_DIR, 'simplify'), tname,
-                                                             tname, num_faces)
+        cmd = "{} -i {} -o {} -f {}".format(os.path.join(MANIFOLD_DIR, 'simplify'), temp_file,
+                                            temp_file, num_faces)
         os.system(cmd)
 
-    m_out = Mesh(tname, hold_history=True, device=mesh.device)
+    m_out = Mesh(temp_file, hold_history=True, device=mesh.device)
     fname = os.path.join(save_path, 'recon_{}_after.obj'.format(len(m_out.faces)))
     m_out.export(fname)
-    os.remove(tname)
+    [os.remove(_) for _ in list(glob.glob(os.path.splitext(temp_file)[0] + '*'))]
     return m_out
 
 def read_pts(pts_file):
