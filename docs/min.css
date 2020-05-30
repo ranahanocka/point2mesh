@@ -2298,17 +2298,18 @@ img {
 }
 
 .link {
-    margin-right: 19px;
-    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    /*margin-right: 19px;*/
+    border-bottom: 1px solid #04948c;
     -webkit-transition: all .5s ease;
     transition: all .5s ease;
-    color: #8c8c8c;
+    /*color: #8c8c8c;*/
+    color: #04948c;
     text-decoration: none
 }
 
 .link:hover {
-    border-bottom: 1px solid #000;
-    color: #383838
+    border-bottom: 1px solid #18446c;
+    color: #18446c
 }
 
 .link.preview {
