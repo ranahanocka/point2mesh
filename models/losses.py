@@ -223,3 +223,42 @@ def chamfer_distance(
     cham_normals = cham_norm_x + cham_norm_y if return_normals else None
 
     return cham_dist, cham_normals
+
+
+class ZeroNanGrad(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, x):
+        return x
+
+    @staticmethod
+    def backward(ctx, grad):
+        grad[grad != grad] = 0
+        return grad
+
+
+class BeamGapLoss:
+    def __init__(self, device):
+        self.device = device
+        self.points, self.masks = None, None
+
+    def update_pm(self, pmesh, target_pc):
+        points, masks = [], []
+        target_pc.to(self.device)
+        total_mask = torch.zeros(pmesh.main_mesh.vs.shape[0])
+        for i, m in enumerate(pmesh):
+            p, mask = m.discrete_project(target_pc, thres=0.99, cpu=True)
+            p, mask = p.to(target_pc.device), mask.to(target_pc.device)
+            points.append(p[:, :3])
+            masks.append(mask)
+            temp = torch.zeros(m.vs.shape[0])
+            if (mask != False).any():
+                temp[m.faces[mask]] = 1
+                total_mask[pmesh.sub_mesh_index[i]] += temp
+        self.points, self.masks = points, masks
+
+    def __call__(self, pmesh, j):
+        losses = self.points[j] - pmesh[j].vs[pmesh[j].faces].mean(dim=1)
+        losses = ZeroNanGrad.apply(losses)
+        losses = torch.norm(losses, dim=1)[self.masks[j]]
+        l2 = losses.mean().float()
+        return l2 * 1e1
