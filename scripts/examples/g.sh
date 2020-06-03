@@ -1,0 +1,14 @@
+python main.py --lr 0.0001 \
+--input-pc ./data/g.ply \
+--upsamp 100 \
+--initial-mesh ./data/g_initmesh.obj \
+--save-path checkpoints/g \
+--iterations 3000 \
+--beamgap-iterations 800 \
+--upsamp 100 \
+--beamgap-modulo 2 \
+--manifold-res 4000 \
+--convs 64 64 64 128 \
+--pools 0 0 0 \
+--max-faces 10000 \
+--manifold-always

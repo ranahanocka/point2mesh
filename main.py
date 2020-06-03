@@ -3,7 +3,7 @@ from models.layers.mesh import Mesh, PartMesh
 from models.networks import init_net, sample_surface, local_nonuniform_penalty
 import utils
 import numpy as np
-from models.losses import chamfer_distance
+from models.losses import chamfer_distance, BeamGapLoss
 from options import Options
 import time
 import os
@@ -30,6 +30,12 @@ part_mesh = PartMesh(mesh, num_parts=options.get_num_parts(len(mesh.faces)), bfs
 print(f'number of parts {part_mesh.n_submeshes}')
 net, optimizer, rand_verts, scheduler = init_net(mesh, part_mesh, device, opts)
 
+beamgap_loss = BeamGapLoss(device)
+
+if opts.beamgap_iterations > 0:
+    print('beamgap on')
+    beamgap_loss.update_pm(part_mesh, torch.cat([input_xyz, input_normals], dim=-1))
+
 for i in range(opts.iterations):
     num_samples = options.get_num_samples(i % opts.upsamp)
     if opts.global_step:
@@ -45,7 +51,11 @@ for i in range(opts.iterations):
         recon_xyz, recon_normals = recon_xyz.type(options.dtype()), recon_normals.type(options.dtype())
         xyz_chamfer_loss, normals_chamfer_loss = chamfer_distance(recon_xyz, input_xyz, x_normals=recon_normals, y_normals=input_normals,
                                               unoriented=opts.unoriented)
-        loss = (xyz_chamfer_loss + (opts.ang_wt * normals_chamfer_loss))
+
+        if (i < opts.beamgap_iterations) and (i % opts.beamgap_modulo == 0):
+            loss = beamgap_loss(part_mesh, part_i)
+        else:
+            loss = (xyz_chamfer_loss + (opts.ang_wt * normals_chamfer_loss))
         if opts.local_non_uniform > 0:
             loss += opts.local_non_uniform * local_nonuniform_penalty(part_mesh.main_mesh).float()
         loss.backward()
@@ -70,7 +80,8 @@ for i in range(opts.iterations):
         mesh = part_mesh.main_mesh
         num_faces = int(np.clip(len(mesh.faces) * 1.5, len(mesh.faces), opts.max_faces))
 
-        if num_faces > len(mesh.faces):
+        if num_faces > len(mesh.faces) or opts.manifold_always:
+            # up-sample mesh
             mesh = utils.manifold_upsample(mesh, opts.save_path, Mesh,
                                            num_faces=min(num_faces, opts.max_faces),
                                            res=opts.manifold_res, simplify=True)
@@ -78,6 +89,9 @@ for i in range(opts.iterations):
             part_mesh = PartMesh(mesh, num_parts=options.get_num_parts(len(mesh.faces)), bfs_depth=opts.overlap)
             print(f'upsampled to {len(mesh.faces)} faces; number of parts {part_mesh.n_submeshes}')
             net, optimizer, rand_verts, scheduler = init_net(mesh, part_mesh, device, opts)
+            if i < opts.beamgap_iterations:
+                print('beamgap updated')
+                beamgap_loss.update_pm(part_mesh, input_xyz)
 
 with torch.no_grad():
     mesh.export(os.path.join(opts.save_path, 'last_recon.obj'))
