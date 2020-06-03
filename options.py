@@ -49,6 +49,13 @@ class Options:
         parser.add_argument('--init-weights', type=float, default=0.002, help='initialize NN with this size')
         #
         parser.add_argument('--export-interval', type=int, metavar='N', default=100, help='export interval')
+        parser.add_argument('--beamgap-iterations', type=int, default=0,
+                            help='the # iters to which the beamgap loss will be calculated')
+        parser.add_argument('--beamgap-modulo', type=int, default=1, help='skip iterations with beamgap loss'
+                                                                          '; calc beamgap when:'
+                                                                          ' iter % (--beamgap-modulo) == 0')
+        parser.add_argument('--manifold-always', action='store_true',
+                            help='always run manifold even when the maximum number of faces is reached')
 
         self.args = parser.parse_args()
 
