@@ -26,6 +26,10 @@ input_xyz += mesh.translations[None, :]
 input_xyz = torch.Tensor(input_xyz).type(options.dtype()).to(device)[None, :, :]
 input_normals = torch.Tensor(input_normals).type(options.dtype()).to(device)[None, :, :]
 
+if (opts.iterations == 0):
+    print('0 iterations provided. Exiting...')
+    exit()
+
 part_mesh = PartMesh(mesh, num_parts=options.get_num_parts(len(mesh.faces)), bfs_depth=opts.overlap)
 print(f'number of parts {part_mesh.n_submeshes}')
 net, optimizer, rand_verts, scheduler = init_net(mesh, part_mesh, device, opts)
@@ -71,12 +75,12 @@ for i in range(1, opts.iterations + 1):
     if i % 1 == 0:
         print(f'{os.path.basename(opts.input_pc)}; iter: {i} out of: {opts.iterations}; loss: {loss.item():.4f};'
               f' sample count: {num_samples}; time: {end_time - start_time:.2f}')
-    if i % opts.export_interval == 0 and i > 0:
+    if i % opts.export_interval == 0:
         print('exporting reconstruction... current LR: {}'.format(optimizer.param_groups[0]['lr']))
         with torch.no_grad():
             part_mesh.export(os.path.join(opts.save_path, f'recon_iter_{i}.obj'))
 
-    if (i > 0 and (i + 1) % opts.upsamp == 0):
+    if (i % opts.upsamp == 0):
         mesh = part_mesh.main_mesh
         num_faces = int(np.clip(len(mesh.faces) * 1.5, len(mesh.faces), opts.max_faces))
 
