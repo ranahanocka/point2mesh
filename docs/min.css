@@ -165,6 +165,7 @@ td, th {
     font-style: normal
 }
 
+
 [class*=" w-icon-"], [class^=w-icon-] {
     font-family: webflow-icons !important;
     speak: none;
