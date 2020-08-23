@@ -24,6 +24,11 @@
             opacity: 0;
         }
     </style>
+
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src='https://threejs.org/examples/js/controls/OrbitControls.js'></script>
+    <script src='https://threejs.org/examples/js/loaders/OBJLoader.js'></script>
+    <script src="meshes/mesh.js"></script>
 </head>
 <body>
 
@@ -127,6 +132,8 @@
     </div>
 </div>
 
+
+
 <div class="section the_section" data-anchor="slide1">
     <div class="w-container"><h2 class="grey-heading">Video</h2>
         <div class="w-embed-youtubevideo stega_movie youtube" id="w-node-e5e45b1d55ac-81500a5f"
@@ -139,13 +146,14 @@
 </div>
 
 
+
 <div class="white_section">
     <div class="w-container"><h2 class="grey-heading">Point2Mesh Overview</h2>
-        <p class="paragraph-3 the_text">
+        <p class="paragraph-3 the_text" >
             Point2Mesh is a technique for reconstructing a surface mesh from an input point cloud.
             This approach "learns" from a single object, by optimizing the weights of a CNN to deform some initial mesh to shrink-wrap the input point cloud:
         </p>
-        <div><span class="center"><img src="images/anky_resize_17.gif"></span></div>
+        <div><span class="center" id="anky_image" ><img src="images/anky_resize_17.gif"></span></div>
          <p class="paragraph-3 the_text">
              The optimized CNN weights act as a <i>prior</i>, which encode the expected shape properties, which we refer to as a <i>self-prior</i>.
              The premise is that shapes are <i>not</i> random, and contain strong self-correlation across multiple scales.
@@ -159,6 +167,39 @@
         <div><span class="center"><img src="images/anky_prior.gif"></span></div>
     </div>
 </div>
+
+<div class="white_section">
+    <div class="w-container"><h2 class="grey-heading">Results</h2>
+    <div class="row" style="text-align:center;padding:0;margin:0" id="meshes">
+            <!-- CSS includes -->
+        <div id="mesh1" class="center">
+            <script>render('#mesh1', 'meshes/thorn2.obj', THREE.SmoothShading);</script>
+        </div>
+
+        <div id="mesh2" class="center">
+            <script>render('#mesh2', 'meshes/cat.obj', THREE.FlatShading);</script>
+        </div>
+
+        <div id="mesh3" class="center">
+            <script>render('#mesh3', 'meshes/bunny.obj', THREE.FlatShading);</script>
+        </div>
+
+        <div id="mesh4" class="center">
+            <script>render('#mesh4', 'meshes/turtle.obj', THREE.FlatShading);</script>
+        </div>
+
+        <div id="mesh6" class="center">
+            <script>render('#mesh6', 'meshes/triceratops.obj', THREE.FlatShading);</script>
+        </div>
+
+        <div id="mesh5" class="center">
+            <script>render('#mesh5', 'meshes/G.obj', THREE.FlatShading);</script>
+        </div>
+
+    </div>
+    </div>
+</div>
+
 
 <div class="white_section">
     <div class="w-container"><h2 class="grey-heading">Acknowledgements</h2>
