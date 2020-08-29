@@ -4,6 +4,7 @@ import os
 import uuid
 from options import MANIFOLD_DIR
 import glob
+import vtk
 
 def manifold_upsample(mesh, save_path, Mesh, num_faces=2000, res=3000, simplify=True):
     # export before upsample
@@ -54,6 +55,9 @@ def read_pts(pts_file):
     return np.array(xyz, dtype=np.float32), np.array(normals, dtype=np.float32)
 
 
+
+
+
 def load_obj(file):
     vs, faces = [], []
     f = open(file)
@@ -92,3 +96,28 @@ def export(file, vs, faces, vn=None, color=None):
 
 def random_file_name(ext, prefix='temp'):
     return f'{prefix}{uuid.uuid4()}.{ext}'
+
+
+
+def load_polydata(polydata):
+    vs = []
+    faces = []
+
+    #Get VS and faces..    
+    nPoints = polydata.GetNumberOfPoints()    
+    nFaces = polydata.GetNumberOfCells()
+
+    for pid in range(nPoints):
+        vs.append(polydata.GetPoint(pid))    
+
+    for fid in range(nFaces):
+        cell = polydata.GetCell(fid)
+        faces.append([cell.GetPointId(0),cell.GetPointId(1), cell.GetPointId(2)])
+
+
+    vs = np.array(vs)
+    faces = np.array(faces)
+
+    
+
+    return vs, faces
