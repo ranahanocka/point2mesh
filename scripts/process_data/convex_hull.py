@@ -1,15 +1,15 @@
 import trimesh
+import sys
 from models.layers.mesh import *
 import argparse
 import pathlib
 from utils import *
 import warnings
 
-
 def run(args):
     xyz, _ = read_pts(args.i)
 
-    m = trimesh.convex.convex_hull(xyz[:, :3])
+    m = trimesh.convex.convex_hull(xyz[:, :3], "QbB Pp Qt")
     vs, faces = m.vertices, m.faces
 
     export(args.o, vs, faces)
@@ -97,3 +97,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     check_args(args)
     run(args)
+
+
