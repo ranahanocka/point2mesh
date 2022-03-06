@@ -1,5 +1,4 @@
 import trimesh
-import sys
 from models.layers.mesh import *
 import argparse
 import pathlib
